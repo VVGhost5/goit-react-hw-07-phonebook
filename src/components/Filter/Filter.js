@@ -1,8 +1,9 @@
 import React from "react";
 import styles from "./Filter.module.css";
 import PropTypes from "prop-types";
-import appActions from "../../redux/app/app-actions";
+import { filterContacts } from "../../redux/app/app-actions";
 import { connect } from "react-redux";
+import appSelectors from "../../redux/app//app-selectors";
 
 const Filter = ({ value, onChange }) => {
   return (
@@ -20,12 +21,12 @@ const Filter = ({ value, onChange }) => {
   );
 };
 
-const mapStateToProps = ({ filter }) => ({
-  value: filter,
+const mapStateToProps = (state) => ({
+  value: appSelectors.getFilter(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onChange: (e) => dispatch(appActions.filterContacts(e.target.value)),
+  onChange: (e) => dispatch(filterContacts(e.target.value)),
 });
 
 Filter.propTypes = {

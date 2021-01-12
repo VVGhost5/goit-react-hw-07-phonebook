@@ -2,15 +2,9 @@ import React from "react";
 import styles from "./Contacts.module.css";
 import { v4 as uuidv4 } from "uuid";
 import PropTypes from "prop-types";
-import appActions from "../../redux/app/app-actions";
+import appOperations from "../../redux/app/app-operations";
+import appSelectors from "../../redux/app/app-selectors";
 import { connect } from "react-redux";
-
-const getVisibleContacts = (contacts, filter) => {
-  const normalizedFilter = filter.toLowerCase();
-  return contacts.filter((el) =>
-    el.contactName.toLowerCase().includes(normalizedFilter)
-  );
-};
 
 const Contacts = ({ contacts, onDelete }) => {
   return (
@@ -34,12 +28,14 @@ const Contacts = ({ contacts, onDelete }) => {
   );
 };
 
-const mapStateToProps = ({ contacts, filter }) => ({
-  contacts: getVisibleContacts(contacts, filter),
-});
+const mapStateToProps = (state) => {
+  return {
+    contacts: appSelectors.getVisibleContacts(state),
+  };
+};
 
 const mapDispatchToProps = (dispatch) => ({
-  onDelete: (id) => dispatch(appActions.deleteContact(id)),
+  onDelete: (id) => dispatch(appOperations.deleteContact(id)),
 });
 
 Contacts.propTypes = {

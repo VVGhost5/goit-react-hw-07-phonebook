@@ -2,7 +2,7 @@ import appReducer from "./app/app-reducer";
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import {
   persistStore,
-  persistReducer,
+  // persistReducer,
   FLUSH,
   REHYDRATE,
   PAUSE,
@@ -12,11 +12,11 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
-const appPersistConfig = {
-  key: "contacts",
-  storage,
-  blacklist: ["filter"],
-};
+// const appPersistConfig = {
+//   key: "contacts",
+//   storage,
+//   blacklist: ["filter"],
+// };
 
 const middleware = [
   ...getDefaultMiddleware({
@@ -27,11 +27,11 @@ const middleware = [
 ];
 
 const store = configureStore({
-  reducer: persistReducer(appPersistConfig, appReducer),
+  reducer: appReducer,
   middleware,
   devTools: process.env.NODE_ENV === "development",
 });
 
-const persistor = persistStore(store);
+// const persistor = persistStore(store);
 
-export default { store, persistor };
+export default store;

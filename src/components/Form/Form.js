@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./Form.module.css";
 import PropTypes from "prop-types";
-import appActions from "../../redux/app/app-actions";
+import appOperations from "../../redux/app/app-operations";
 import { connect } from "react-redux";
 
 const Form = function ({ onSubmit }) {
@@ -54,7 +54,8 @@ const Form = function ({ onSubmit }) {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  onSubmit: (name, number) => dispatch(appActions.addContact({ name, number })),
+  onSubmit: (name, number) =>
+    dispatch(appOperations.addContact({ name, number })),
 });
 
 Form.propTypes = {

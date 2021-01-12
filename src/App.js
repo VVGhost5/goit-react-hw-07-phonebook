@@ -1,24 +1,34 @@
-import React, { useState, useEffect } from "react";
-import { v4 as uuidv4 } from "uuid";
+import React, { useEffect } from "react";
 import Form from "./components/Form/Form";
 import Contacts from "./components/Contacts/Contacts";
 import Filter from "./components/Filter/Filter";
 import Notification from "./components/Notification/Notification";
-import store from "./redux/store";
 import { connect } from "react-redux";
+import appOperations from "./redux/app/app-operations";
+import appSelectors from "./redux/app/app-selectors";
 
-const App = function ({ contacts }) {
+const App = function ({ contacts, isLoading, fetchContacts }) {
+  useEffect(() => {
+    fetchContacts();
+  }, []);
+
   return (
     <div className="container">
       <Form />
       {contacts.length ? <Contacts /> : <Notification />}
       <Filter />
+      {isLoading && <h2>Loading...</h2>}
     </div>
   );
 };
 
-const mapStateToProps = ({ contacts }) => ({
-  contacts: contacts,
+const mapStateToProps = (state) => ({
+  contacts: appSelectors.getContacts(state),
+  isLoading: appSelectors.getIsLoading(state),
 });
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = (dispatch) => ({
+  fetchContacts: () => dispatch(appOperations.fetchContacts()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
